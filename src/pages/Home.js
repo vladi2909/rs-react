@@ -1,9 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/input";
 
 export const Home = () => {
   const [input, setInput] = useState('');
+  const val = useRef();
+
+  useEffect(() => {
+    const inputSearch = localStorage.getItem('inputSearch');
+    setInput(inputSearch);
+  }, [Home]);
+
+  useEffect(() => {
+    val.current = input;
+  }, [input]);
+
+  useEffect(() => {
+    return () => {
+      localStorage.setItem('inputSearch', val.current);
+    }
+  }, []);
 
   const inputChange = (e) => {
     setInput(e);
