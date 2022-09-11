@@ -6,12 +6,17 @@
 }
 
 .header {
-  padding: 10px 0;
+  padding: 20px 0;
   display: flex;
   justify-content: center;
 }
 
 .header__link {
+  padding: 0 10px;
   color: #fff;
   text-decoration: none;
+}
+
+.header__link.active {
+  text-decoration: underline;
 }
