@@ -1,0 +1,21 @@
+.card {
+  border: 1px solid gray;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 1px 1px 9px 1px gray;
+}
+
+.card-content {
+  padding: 10px;
+}
+
+.price-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.old-price {
+  font-size: 13px;
+  text-decoration: line-through;
+}

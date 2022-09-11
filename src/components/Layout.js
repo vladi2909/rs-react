@@ -16,7 +16,7 @@ export const Layout = () => {
         <Outlet />
       </main>
 
-      <footer>2022</footer>
+      <footer></footer>
     </>
   );
 };
