@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Button } from "../components/ui/Button";
-import { Input } from "../components/ui/input";
+import { Input } from "../components/ui/InputSearch";
 import { CardList } from "../components/CardList/CardList";
 
 export const Home = () => {

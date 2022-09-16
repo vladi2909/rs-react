@@ -10,6 +10,9 @@ export const Layout = () => {
         <NavLink to="/about" className='header__link'>
           About
         </NavLink>
+        <NavLink to="/registration" className='header__link'>
+          Form
+        </NavLink>
       </header>
 
       <main>

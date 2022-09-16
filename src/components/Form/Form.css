@@ -1,0 +1,13 @@
+form {
+  margin: 40px auto;
+  display: flex;
+  justify-content: center;
+}
+
+label {
+  display: block;
+}
+
+input {
+  display: block;
+}
