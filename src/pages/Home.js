@@ -2,10 +2,18 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/InputSearch";
 import { CardList } from "../components/CardList/CardList";
+import { useForm } from "react-hook-form";
 
 export const Home = () => {
   const [input, setInput] = useState('');
   const val = useRef();
+  const {
+    register,
+    formState: {
+      errors
+    },
+    handleSubmit,
+  } = useForm({ defaultValues: { inputSearch: input } });
 
   useEffect(() => {
     const inputSearch = localStorage.getItem('inputSearch');
@@ -26,22 +34,35 @@ export const Home = () => {
     setInput(e);
   };
 
+  const onSubmit = (data) => {
+    console.log(data);
+  }
+
   return (
     <div>
-      <div style={search}>
-        <Input
-          value={input}
-          inputChange={inputChange}
-          placeholder="Search..."
-        />
-        <Button variant="contained" title="search" />
+      <div style={searchBlock}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Input
+            input={input}
+            register={register}
+            errors={errors}
+            inputChange={inputChange}
+            placeholder="Search..." 
+          />
+          <Button variant="contained" title="search" />
+        </form>
       </div>
         <CardList />
     </div>
   );
 };
 
-const search = {
+const searchBlock = {
   display: 'flex',
-  justifyContent: 'center',
+  maxWidth: '60%',
+  margin: '0 auto',
 };
+
+const search = {
+  with: '100%',
+}

@@ -1,9 +1,15 @@
 export const Input = (props) => {
+  
   return (
     <input
-      value={props.value}
-      onChange={(e) => props.inputChange(e.target.value)}
+      value={props.input}
       style={input}
+      {
+        ...props.register('inputSearch', {
+        onChange: (e) => {props.inputChange(e.target.value)},
+        required: 'required field',
+        })
+      }
       placeholder={props.placeholder}
     />
   );

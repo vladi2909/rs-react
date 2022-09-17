@@ -20,7 +20,9 @@ export const Button = (props) => {
 };
 
 const button = {
-  padding: '6px 16px',
+  minWidth: '140px',
+  padding: '14px 16px',
+  marginLeft: '20px',
   borderRadius: '4px',
   fontWeight: 500,
   fontSize: '0.875rem',
