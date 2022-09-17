@@ -11,3 +11,12 @@ label {
 input {
   display: block;
 }
+
+.error {
+  color: crimson;
+  font-size: 14px;
+}
+
+input[type='submit'] {
+  padding: 3px 10px;
+}

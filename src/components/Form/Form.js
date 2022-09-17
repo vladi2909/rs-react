@@ -1,66 +1,75 @@
-import { useState } from 'react';
 import { Button } from '../ui/Button';
 import './Form.css';
+import { useForm } from 'react-hook-form';
 
 export const Form = ({ setFormValues }) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [country, setCountry] = useState('Minsk');
-  const [agree, setAgree] = useState(false);
+  const {
+    register,
+    formState: {
+      errors,
+      isValid,
+    },
+    handleSubmit,
+    reset,
+  } = useForm({ mode: 'onBlur', defaultValues: { agree: false } });
 
-  const handleSubmit = (e) => {
-    setFormValues(
-      state => [
-        ...state,
-        {
-          firstName,
-          lastName,
-          birthday,
-          country,
-          agree
-        }
-      ]
-    );
-    e.preventDefault();
+  const onSubmit = (data) => {
+    reset();
+    setFormValues(state => [...state, {data}]);
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <label htmlFor='firstName'>
           FirstName:
           <input 
             type='text'
-            name='firstName'
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            { ...register('firstName', {
+              required: 'required field',
+              minLength: {
+                value: 3,
+                message: 'min 3 characters',
+              }
+            }) }
           />
         </label>
+        <div>
+          {errors?.firstName && <p className='error'>{errors?.firstName.message}</p>}
+        </div>
         <label htmlFor='lastName'>
           LastName:
           <input 
             type='text'
-            name='lastName'
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            { ...register('lastName', {
+              required: 'required field',
+              minLength: {
+                value: 3,
+                message: 'min 3 characters',
+              }
+            }) }
           />
         </label>
-        <label htmlFor='Birthday'>
+        <div>
+          {errors?.lastName && <p className='error'>{errors?.lastName.message}</p>}
+        </div>
+        <label htmlFor='birthday'>
           Birthday:
           <input 
             type='date'
-            name='Birthday'
-            value={birthday}
-            onChange={(e) => setBirthday(e.target.value)}
+            { ...register('birthday', {
+              required: 'required field',
+            })}
           />
         </label>
+        <div>
+          {errors?.birthday && <p className='error'>{errors?.birthday.message}</p>}
+        </div>
         <label htmlFor='country'>
           Country:
           <select
             name='country'
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
+            { ...register('country')}
           >
             <option>Minsk</option>
             <option>Mogilev</option>
@@ -71,15 +80,21 @@ export const Form = ({ setFormValues }) => {
           I'm agree
           <input
             type='checkbox'
-            name='agree'
-            checked={agree}
-            onChange={() => setAgree(prev => !prev)}
+            { ...register('agree', {
+              required: 'required field',
+            })}
           />
         </label>
-        <Button variant="contained" title="Submit" />
+        <div>
+          {errors?.agree && <p className='error'>{errors?.agree.message}</p>}
+        </div>
+        <input
+          type='submit'
+          variant="contained"
+          title="Submit"
+          disabled={!isValid}
+        />
       </div>
-
-      
     </form>
   );
 };

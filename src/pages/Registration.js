@@ -4,6 +4,7 @@ import { Form } from "../components/Form/Form";
 
 export const Registration = () => {
   const [formValues, setFormValues] = useState([]);
+  console.log(formValues);
   return (
     <>
       <Form setFormValues={setFormValues} />
