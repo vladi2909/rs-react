@@ -1,16 +1,15 @@
 import './Card.css';
 
 export const Card = (props) => {
-  const card = props.item;
+  const character = props.character;
   return (
     <div className="card">
-      <img src={card.linkImg} />
+      <img src={character.image} />
       <div className="card-content">
-        <p>{card.title}</p>
-        <span>{card.article}</span>
+        <p>{character.name}</p>
+        <p>{character.location.name}</p>
         <div className='price-block'>
-          <span>{card.price}</span>
-          <span className='old-price'>{card.oldPrice}</span>
+          <span>{character.created}</span>
         </div>
       </div>
     </div>

@@ -1,8 +1,12 @@
+import * as React from 'react';
 import { useEffect, useState, useRef } from "react";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/InputSearch";
 import { CardList } from "../components/CardList/CardList";
 import { useForm } from "react-hook-form";
+import { Api } from "../service/api";
+import { PATH_API } from "../service/globalSettings";
+import { SortBy } from "../components/sortBy/SortBy";
 
 export const Home = () => {
   const [input, setInput] = useState('');
@@ -14,10 +18,12 @@ export const Home = () => {
     },
     handleSubmit,
   } = useForm({ defaultValues: { inputSearch: input } });
+  const [character, setCharacter] = useState([]);
 
   useEffect(() => {
     const inputSearch = localStorage.getItem('inputSearch');
     setInput(inputSearch);
+    onInit();
   }, [Home]);
 
   useEffect(() => {
@@ -34,8 +40,26 @@ export const Home = () => {
     setInput(e);
   };
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onInit = async () => {
+    try {
+      const res = await Api.get(PATH_API);
+      setCharacter(res.results);
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
+  const onSubmit = async (data) => {
+    try {
+      const res = await Api.get(`${PATH_API}/?name=${data.inputSearch}`);
+      setCharacter(res.results);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  const onSortStatus = (data) => {
+    setCharacter(data);
   }
 
   return (
@@ -47,19 +71,20 @@ export const Home = () => {
             register={register}
             errors={errors}
             inputChange={inputChange}
-            placeholder="Search..." 
+            placeholder="Search..."
           />
           <Button variant="contained" title="search" />
         </form>
       </div>
-        <CardList />
+      <SortBy onSortStatus={onSortStatus} input={input} />
+      <CardList characters={character} />
     </div>
   );
 };
 
 const searchBlock = {
   display: 'flex',
-  maxWidth: '60%',
+  maxWidth: '67%',
   margin: '0 auto',
 };
 

@@ -1,13 +1,14 @@
 import './CardList.css';
-import { testData } from '../../TestData';
 import { Card } from '../Card/Card';
 
-export const CardList = () => {
-  
+export const CardList = (props) => {
+  const characters = props.characters;
   return (
     <div className="cardList">
       {
-        testData.map(item => <Card key={item.id} item={item} />)
+        characters
+          ? characters.map(character => <Card key={character.id} character={character} />)
+          : <div>There is nothing here</div>
       }
     </div>
   );

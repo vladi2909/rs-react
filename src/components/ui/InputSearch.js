@@ -16,6 +16,7 @@ export const Input = (props) => {
 };
 
 const input = {
+  width: '100%',
   padding: '6px 16px',
   border: 'none',
   borderRadius: '4px',
