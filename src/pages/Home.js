@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { Api } from "../service/api";
 import { PATH_API } from "../service/globalSettings";
 import { SortBy } from "../components/sortBy/SortBy";
+import { Modal } from '../components/Modal/Modal';
 
 export const Home = () => {
   const [input, setInput] = useState('');
@@ -19,6 +20,8 @@ export const Home = () => {
     handleSubmit,
   } = useForm({ defaultValues: { inputSearch: input } });
   const [character, setCharacter] = useState([]);
+  const [modalActive, setModalActive] = useState(false);
+  const [characterActive, setCharacterActive] = useState();
 
   useEffect(() => {
     const inputSearch = localStorage.getItem('inputSearch');
@@ -77,9 +80,21 @@ export const Home = () => {
         </form>
       </div>
       <SortBy onSortStatus={onSortStatus} input={input} />
-      <CardList characters={character} />
+      <CardList
+        characters={character}
+        setActive={setModalActive}
+        characterActive={setCharacterActive}
+      />
+      { modalActive
+          ? <Modal
+              active={modalActive}
+              setActive={setModalActive}
+              characterActive={characterActive}
+            />
+          : null
+      } 
     </div>
-  );
+  ); 
 };
 
 const searchBlock = {
