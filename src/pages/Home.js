@@ -8,6 +8,9 @@ import { Api } from "../service/api";
 import { PATH_API } from "../service/globalSettings";
 import { SortBy } from "../components/sortBy/SortBy";
 import { Modal } from '../components/Modal/Modal';
+import ReactLoading from 'react-loading';
+import { Paginations } from '../components/Pagination/Pagination';
+
 
 export const Home = () => {
   const [input, setInput] = useState('');
@@ -22,6 +25,8 @@ export const Home = () => {
   const [character, setCharacter] = useState([]);
   const [modalActive, setModalActive] = useState(false);
   const [characterActive, setCharacterActive] = useState();
+  const [loading, setLoading] = useState(false);
+  const [numOfPage, setNumOfPage] = useState();
 
   useEffect(() => {
     const inputSearch = localStorage.getItem('inputSearch');
@@ -46,7 +51,11 @@ export const Home = () => {
   const onInit = async () => {
     try {
       const res = await Api.get(PATH_API);
+      setNumOfPage(res.info.pages);
       setCharacter(res.results);
+      setTimeout(() => {
+        setLoading(true);
+      }, 500);
     } catch(e) {
       console.error(e);
     }
@@ -56,6 +65,9 @@ export const Home = () => {
     try {
       const res = await Api.get(`${PATH_API}/?name=${data.inputSearch}`);
       setCharacter(res.results);
+      setTimeout(() => {
+        setLoading(true);
+      }, 500);
     } catch (e) {
       console.error(e);
     }
@@ -80,18 +92,31 @@ export const Home = () => {
         </form>
       </div>
       <SortBy onSortStatus={onSortStatus} input={input} />
-      <CardList
-        characters={character}
-        setActive={setModalActive}
-        characterActive={setCharacterActive}
-      />
+      {
+        loading
+          ? <>
+              <CardList
+                characters={character}
+                setActive={setModalActive}
+                characterActive={setCharacterActive}
+              />
+              <Paginations setCharacter={setCharacter} numOfPage={numOfPage} />
+            </>
+          : <div style={spin}>
+              <ReactLoading
+                type={'spin'}
+                height={'3%'}
+                width={'3%'}
+              />
+            </div>
+      }
       { modalActive
-          ? <Modal
-              active={modalActive}
-              setActive={setModalActive}
-              characterActive={characterActive}
-            />
-          : null
+        ? <Modal
+            active={modalActive}
+            setActive={setModalActive}
+            characterActive={characterActive}
+          />
+        : null
       } 
     </div>
   ); 
@@ -103,6 +128,12 @@ const searchBlock = {
   margin: '0 auto',
 };
 
-const search = {
-  with: '100%',
-}
+const spin = {
+  position: 'fixed',
+  width: '100vw',
+  height: '100vh',
+  top: '0',
+  display:' flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
